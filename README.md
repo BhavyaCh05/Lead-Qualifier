@@ -81,11 +81,11 @@ Built with **resilience in mind**, the system continues to function even when ex
 ---
 
 ## 🛠️ Tech Stack
--Backend: FastAPI
--Language: Python
--AI Integration: OpenAI (toggle-based)
--Deployment: Render
--API Testing: Swagger UI
+- Backend: FastAPI
+- Language: Python
+- AI Integration: OpenAI (toggle-based)
+- Deployment: Render
+- API Testing: Swagger UI
 
 ---
 
@@ -122,26 +122,26 @@ USE_OPENAI = True
 Deployed on Render with public access.
 Free tier note:
 
--Service may sleep after inactivity
--First request can take ~30–50 seconds
+- Service may sleep after inactivity
+- First request can take ~30–50 seconds
 
 ---
 
 ## 🎯 Why this project stands out
 
--Not just an API → a resilient system design
--Works with or without external AI
--Structured output suitable for real-world pipelines
--Built with deployment and failure scenarios in mind
+- Not just an API → a resilient system design
+- Works with or without external AI
+- Structured output suitable for real-world pipelines
+- Built with deployment and failure scenarios in mind
 
 ---
 
 ## 📌 Future Improvements
 
--Advanced NLP parsing (names, exact budgets, locations)
--Database integration for lead storage
--Frontend dashboard for visualization
--Real-time CRM integration
+- Advanced NLP parsing (names, exact budgets, locations)
+- Database integration for lead storage
+- Frontend dashboard for visualization
+- Real-time CRM integration
 
 ---
 
