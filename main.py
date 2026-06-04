@@ -31,41 +31,110 @@ class ChatRequest(BaseModel):
 
 
 # Fallback Logic
+import re
+
 def fallback_function(message: str):
-    message_lower = message.lower()
+    msg = message.lower()
 
-    score = 50
-    category = "Cold"
+    # -----------------------------
+    # 🧠 Extract Budget
+    # -----------------------------
+    budget = None
+    budget_match = re.search(r'(\d+(\.\d+)?\s*(lakh|lakhs|crore|cr))', msg)
 
-    if "budget" in message_lower or "crore" in message_lower or "lakhs" in message_lower:
+    if budget_match:
+        budget = budget_match.group(0)
+
+    # -----------------------------
+    # 📍 Extract Location
+    # -----------------------------
+    cities = ["gurgaon", "delhi", "mumbai", "bangalore", "pune", "noida", "hyderabad"]
+    location = next((city for city in cities if city in msg), None)
+
+    # -----------------------------
+    # ⏳ Extract Timeline
+    # -----------------------------
+    timeline = None
+
+    if "immediate" in msg or "asap" in msg:
+        timeline = "immediate"
+    else:
+        timeline_match = re.search(r'(\d+\s*(day|days|week|weeks|month|months))', msg)
+        if timeline_match:
+            timeline = timeline_match.group(0)
+
+    # -----------------------------
+    # 🏠 Extract Requirement
+    # -----------------------------
+    requirement = None
+    req_match = re.search(r'(\d+\s*(bhk))', msg)
+
+    if req_match:
+        requirement = req_match.group(0)
+
+    # -----------------------------
+    # 🎯 Scoring Logic
+    # -----------------------------
+    score = 40
+
+    if budget:
         score += 20
+    if timeline:
+        if "immediate" in timeline:
+            score += 30
+        else:
+            score += 20
+    if location:
+        score += 10
+    if requirement:
+        score += 10
 
-    if "month" in message_lower or "immediate" in message_lower:
-        score += 20
+    # Cap score
+    score = min(score, 100)
 
+    # -----------------------------
+    # 🔥 Categorization
+    # -----------------------------
     if score >= 80:
         category = "Hot"
     elif score >= 60:
         category = "Warm"
+    else:
+        category = "Cold"
+
+    # -----------------------------
+    # 🧠 Reasoning Generator
+    # -----------------------------
+    reasoning_parts = []
+
+    if budget:
+        reasoning_parts.append("Budget specified")
+    if timeline:
+        reasoning_parts.append("Clear timeline")
+    if location:
+        reasoning_parts.append("Location identified")
+    if requirement:
+        reasoning_parts.append("Requirement defined")
+
+    reasoning = ", ".join(reasoning_parts) if reasoning_parts else "Limited information provided"
 
     return {
         "source": "fallback",
         "data": {
             "lead_data": {
                 "name": None,
-                "requirement": "Property purchase",
-                "budget": "Detected from input",
-                "timeline": "Detected from input",
-                "location": "Detected from input"
+                "requirement": requirement or "Not specified",
+                "budget": budget or "Not specified",
+                "timeline": timeline or "Not specified",
+                "location": location or "Not specified"
             },
             "evaluation": {
                 "score": score,
                 "category": category,
-                "reasoning": "Rule-based evaluation using keywords"
+                "reasoning": reasoning
             }
         }
     }
-
 
 # Main Processing Function
 def process_lead(message: str):
