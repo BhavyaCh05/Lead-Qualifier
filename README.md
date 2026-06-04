@@ -47,6 +47,27 @@ Built with **resilience in mind**, the system continues to function even when ex
 
 ---
 
+## 🧠 Architecture
+
+```text
+User Input
+   │
+   ▼
+FastAPI Endpoint (/qualify)
+   │
+   ▼
+Processing Layer
+   ├── OpenAI (if enabled)
+   └── Fallback Logic (rule-based extraction)
+   │
+   ▼
+Lead Evaluation Engine
+   │
+   ▼
+Structured JSON Response
+```
+---
+
 ## 🧪 Example Usage
 
 ### Request
