@@ -55,7 +55,7 @@ Built with **resilience in mind**, the system continues to function even when ex
   "message": "Looking for a 3BHK in Gurgaon, budget 1 crore, within 2 months"
 }
 ```
-##📦 Example Response
+## 📦 Example Response
 ```json
 {
   "result": {
@@ -80,7 +80,7 @@ Built with **resilience in mind**, the system continues to function even when ex
 
 ---
 
-##🛠️ Tech Stack
+## 🛠️ Tech Stack
 -Backend: FastAPI
 -Language: Python
 -AI Integration: OpenAI (toggle-based)
@@ -89,7 +89,7 @@ Built with **resilience in mind**, the system continues to function even when ex
 
 ---
 
-##🚀 Run Locally
+## 🚀 Run Locally
 ```
 git clone https://github.com/bhavyach05/Lead-Qualifier.git
 cd Lead-Qualifier
@@ -104,7 +104,7 @@ python -m uvicorn main:app --reload
 
 ---
 
-##🔐 Environment Variables (Optional)
+## 🔐 Environment Variables (Optional)
 
 To enable AI mode:
 ```
@@ -117,7 +117,7 @@ USE_OPENAI = True
 
 ---
 
-##🌍 Deployment
+## 🌍 Deployment
 
 Deployed on Render with public access.
 Free tier note:
@@ -127,7 +127,7 @@ Free tier note:
 
 ---
 
-##🎯 Why this project stands out
+## 🎯 Why this project stands out
 
 -Not just an API → a resilient system design
 -Works with or without external AI
@@ -136,7 +136,7 @@ Free tier note:
 
 ---
 
-##📌 Future Improvements
+## 📌 Future Improvements
 
 -Advanced NLP parsing (names, exact budgets, locations)
 -Database integration for lead storage
@@ -145,6 +145,6 @@ Free tier note:
 
 ---
 
-##👨‍💻 Author
+## 👨‍💻 Author
 
 Bhavya Chaudhry
