@@ -2,23 +2,74 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
-from openai import OpenAI
 
-# Load environment variables
+# Optional OpenAI import
+try:
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except:
+    OPENAI_AVAILABLE = False
+
+# Load env variables
 load_dotenv()
 
 app = FastAPI()
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Toggle (you can switch this anytime)
+USE_OPENAI = False
+
+# Initialize OpenAI client if available
+if OPENAI_AVAILABLE:
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 # Request model
 class ChatRequest(BaseModel):
     message: str
 
 
+# 🔥 Fallback Logic (always works)
+def fallback_function(message: str):
+    message_lower = message.lower()
+
+    score = 50
+    category = "Cold"
+
+    if "budget" in message_lower or "crore" in message_lower or "lakhs" in message_lower:
+        score += 20
+
+    if "month" in message_lower or "immediate" in message_lower:
+        score += 20
+
+    if score >= 80:
+        category = "Hot"
+    elif score >= 60:
+        category = "Warm"
+
+    return {
+        "source": "fallback",
+        "data": {
+            "lead_data": {
+                "name": None,
+                "requirement": "Property purchase",
+                "budget": "Detected from input",
+                "timeline": "Detected from input",
+                "location": "Detected from input"
+            },
+            "evaluation": {
+                "score": score,
+                "category": category,
+                "reasoning": "Rule-based evaluation using keywords"
+            }
+        }
+    }
+
+
+# 🧠 Main Processing Function
 def process_lead(message: str):
-    prompt = f"""
+    if USE_OPENAI and OPENAI_AVAILABLE:
+        try:
+            prompt = f"""
 You are an AI system that extracts and evaluates sales leads.
 
 Return STRICT JSON:
@@ -42,39 +93,25 @@ Message:
 {message}
 """
 
-    try:
-        response = client.responses.create(
-            model="gpt-4o-mini",
-            input=prompt
-        )
+            response = client.responses.create(
+                model="gpt-4o-mini",
+                input=prompt
+            )
 
-        return {
-            "source": "openai",
-            "data": response.output_text
-        }
-
-    except Exception as e:
-        # Fallback logic (VERY IMPORTANT for demo reliability)
-        return {
-            "source": "fallback",
-            "error": str(e),
-            "data": {
-                "lead_data": {
-                    "name": None,
-                    "requirement": "Property purchase",
-                    "budget": "Approx detected",
-                    "timeline": "Estimated",
-                    "location": "Detected from input"
-                },
-                "evaluation": {
-                    "score": 70,
-                    "category": "Warm",
-                    "reasoning": "Fallback used due to API limitation"
-                }
+            return {
+                "source": "openai",
+                "data": response.output_text
             }
-        }
+
+        except Exception as e:
+            # fallback if API fails
+            return fallback_function(message)
+
+    else:
+        return fallback_function(message)
 
 
+# Routes
 @app.get("/")
 def home():
     return {"message": "AI Lead Qualification API is running 🚀"}
