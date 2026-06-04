@@ -110,7 +110,7 @@ To enable AI mode:
 ```
 OPENAI_API_KEY=your_api_key_here
 ```
-Then in code:
+Then update in code:
 ```PYTHON
 USE_OPENAI = True
 ```
@@ -129,10 +129,11 @@ Free tier note:
 
 ## 🎯 Why this project stands out
 
-- Not just an API → a resilient system design
-- Works with or without external AI
-- Structured output suitable for real-world pipelines
-- Built with deployment and failure scenarios in mind
+- Designed with failure scenarios in mind
+- Works even without external AI dependencies
+- Demonstrates real-world backend architecture
+- Fully deployed and publicly accessible
+> Not just a demo — built like a production system
 
 ---
 
