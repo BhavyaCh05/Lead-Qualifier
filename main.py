@@ -19,7 +19,9 @@ app = FastAPI()
 USE_OPENAI = False
 
 # Initialize OpenAI client if available
-if OPENAI_AVAILABLE:
+client = None
+
+if USE_OPENAI and OPENAI_AVAILABLE:
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
@@ -28,7 +30,7 @@ class ChatRequest(BaseModel):
     message: str
 
 
-# 🔥 Fallback Logic (always works)
+# Fallback Logic
 def fallback_function(message: str):
     message_lower = message.lower()
 
@@ -65,7 +67,7 @@ def fallback_function(message: str):
     }
 
 
-# 🧠 Main Processing Function
+# Main Processing Function
 def process_lead(message: str):
     if USE_OPENAI and OPENAI_AVAILABLE:
         try:
